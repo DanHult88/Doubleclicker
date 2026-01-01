@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Double Click Test (JavaScript) — Mouse Double-Click Checker</title>
+  <meta
+    name="description"
+    content="Test your mouse for accidental fast double-clicking (mouse chatter). Check left, right, and middle buttons with configurable detection intervals."
+  />
+
+  <!-- Canonical & indexing -->
+  <link rel="canonical" href="https://YOURDOMAIN.com/" />
+  <meta name="robots" content="index,follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Double Click Test — Mouse Double-Click Checker" />
+  <meta
+    property="og:description"
+    content="Detect accidental fast double clicks. Test left, right, and middle mouse buttons with configurable thresholds."
+  />
+  <meta property="og:url" content="https://YOURDOMAIN.com/" />
+
+  <!-- Icons -->
+  <link rel="icon" href="/favicon.ico" />
+
+  <!-- UI -->
+  <meta name="theme-color" content="#0b0f17" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Double Click Test",
+    "url": "https://YOURDOMAIN.com/",
+    "description": "Test left, right, and middle mouse buttons for accidental fast double-clicking (mouse chatter) with configurable thresholds."
+  }
+  </script>
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+
+<body>
+  <header class="wrap">
+    <div class="top">
+      <h1>Double Click Test</h1>
+      <p class="subtitle">
+        Click inside the box using <b>Left</b>, <b>Right</b>, and <b>Middle</b> mouse buttons.
+        Fast “double-clicks” (mouse chatter) will light up <b class="bad-text">red</b>.
+      </p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card" aria-labelledby="testerTitle">
+      <div class="card-head">
+        <h2 id="testerTitle">Test Area</h2>
+        <div class="pill" id="statusPill" aria-live="polite">Ready</div>
+      </div>
+
+      <div
+        id="testArea"
+        class="test-area"
+        role="button"
+        tabindex="0"
+        aria-label="Double click test area"
+      >
+        <div class="test-area-inner">
+          <div class="big">Click here</div>
+          <div class="small">
+            Left / Right / Middle-click to test • Red = suspicious fast double
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-4">
+        <div class="stat">
+          <div class="stat-label">Total presses</div>
+          <div class="stat-value" id="pressCount">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Bad doubles (fast)</div>
+          <div class="stat-value bad" id="badDoubleCount">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Normal doubles</div>
+          <div class="stat-value" id="normalDoubleCount">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Last interval</div>
+          <div class="stat-value" id="lastInterval">—</div>
+        </div>
+      </div>
+
+      <div class="mini-card" aria-labelledby="perButtonTitle">
+        <div class="mini-head">
+          <h3 id="perButtonTitle">Per button</h3>
+          <span class="muted">Counts update live</span>
+        </div>
+
+        <div class="table-wrap" role="region" aria-label="Per button statistics">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Button</th>
+                <th>Presses</th>
+                <th class="bad-text">Bad fast doubles</th>
+                <th>Normal doubles</th>
+                <th>Last interval</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Left</td>
+                <td id="pLeft">0</td>
+                <td class="bad-text" id="bLeft">0</td>
+                <td id="nLeft">0</td>
+                <td id="iLeft">—</td>
+              </tr>
+              <tr>
+                <td>Middle / Wheel</td>
+                <td id="pMiddle">0</td>
+                <td class="bad-text" id="bMiddle">0</td>
+                <td id="nMiddle">0</td>
+                <td id="iMiddle">—</td>
+              </tr>
+              <tr>
+                <td>Right</td>
+                <td id="pRight">0</td>
+                <td class="bad-text" id="bRight">0</td>
+                <td id="nRight">0</td>
+                <td id="iRight">—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="controls" aria-labelledby="controlsTitle">
+        <h3 id="controlsTitle">Settings</h3>
+
+        <div class="control-row">
+          <label>Buttons to test</label>
+          <div class="button-toggles" role="group" aria-label="Mouse buttons to test">
+            <label class="toggle">
+              <input id="testLeft" type="checkbox" checked />
+              Left
+            </label>
+            <label class="toggle">
+              <input id="testMiddle" type="checkbox" checked />
+              Middle
+            </label>
+            <label class="toggle">
+              <input id="testRight" type="checkbox" checked />
+              Right
+            </label>
+          </div>
+          <p class="hint">
+            Disable buttons if you only want to test one at a time.
+          </p>
+        </div>
+
+        <div class="control-row">
+          <label for="fastThreshold">Fast double interval (ms) — flags “mouse chatter”</label>
+          <div class="control-inline">
+            <input id="fastThreshold" type="range" min="10" max="200" step="1" value="80" />
+            <input id="fastThresholdNumber" type="number" min="10" max="200" step="1" value="80" />
+          </div>
+          <p class="hint">
+            Default 80ms. If you see red while trying single presses, the switch may be failing.
+          </p>
+        </div>
+
+        <div class="control-row">
+          <label for="normalThreshold">Normal double max (ms) — for comparison</label>
+          <div class="control-inline">
+            <input id="normalThreshold" type="range" min="150" max="900" step="10" value="500" />
+            <input id="normalThresholdNumber" type="number" min="150" max="900" step="10" value="500" />
+          </div>
+          <p class="hint">
+            This is the “human double click” window. Red fast doubles are the suspicious ones.
+          </p>
+        </div>
+
+        <div class="control-row">
+          <label class="checkbox">
+            <input id="requireSameTarget" type="checkbox" checked />
+            Require presses in the same area (prevents stray detections)
+          </label>
+        </div>
+
+        <div class="buttons">
+          <button id="resetBtn" class="btn" type="button">Reset</button>
+          <button id="copyBtn" class="btn secondary" type="button">Copy results</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="logTitle">
+      <div class="card-head">
+        <h2 id="logTitle">Event Log</h2>
+        <span class="muted">Newest first</span>
+      </div>
+      <ol id="log" class="log" aria-live="polite"></ol>
+    </section>
+
+    <section class="card" aria-labelledby="aboutTitle">
+      <h2 id="aboutTitle">How to use</h2>
+      <ul class="bullets">
+        <li>Set <b>Fast double interval</b> low (80ms is a good starting point).</li>
+        <li>Try making clean single presses. If you get red triggers, that’s suspicious.</li>
+        <li>Test <b>Left</b>, <b>Right</b>, and <b>Middle</b> separately using the toggles.</li>
+      </ul>
+    </section>
+  </main>
+
+<footer class="wrap footer">
+  <div class="footer-inner">
+    <p class="footer-main">
+      Built by <strong>Dan</strong> ·
+      <a
+        href="https://portfolio2025-75hu.vercel.app/"
+        target="_blank"
+        rel="noopener"
+      >
+        Portfolio
+      </a>
+    </p>
+
+    <p class="footer-sub">
+      Runs entirely in your browser. No tracking, no data collection.
+    </p>
+  </div>
+</footer>
+
+
+  <script src="./app.js"></script>
+</body>
+</html>
