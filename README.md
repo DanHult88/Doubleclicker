@@ -1,4 +1,4 @@
-# Double Click Test
+# Double Click Test to check mouse.
 
 A browser-based mouse double-click tester designed to detect **accidental fast double-clicks (mouse chatter)**.
 
