@@ -1,6 +1,6 @@
 # Double Click Test to check mouse.
 
-A browser-based mouse double-click tester designed to detect **accidental fast double-clicks (mouse chatter)
+A browser-based mouse double-click tester designed to detect **accidental fast double-clicks (mouse chatter).
 This tool lets you:
 - Test **left, right, and middle** mouse buttons
 - Detect **suspicious fast double-clicks** (default 80ms)
