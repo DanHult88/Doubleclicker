@@ -21,6 +21,6 @@ Very fast intervals are flagged as potential hardware issues.
 - Runs entirely in the browser
 - No tracking, no data collection
 
-## Author
+## Author.
 Built by **Dan**  
 Portfolio: https://portfolio2025-75hu.vercel.app/
