@@ -16,7 +16,7 @@ Very fast intervals are flagged as potential hardware issues.
 
 ## Tech stack
 - Vanilla HTML
-- CSS
+- CSS 
 - JavaScript (no frameworks)
 - Runs entirely in the browser
 - No tracking, no data collection
