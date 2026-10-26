@@ -7,7 +7,7 @@ This tool lets you:
 - Compare against normal human double-click intervals
 - See per-button statistics and timing intervals
 
-## Live version
+## Live version 
 (Coming soon – hosted on Vercel)
 
 ## How it works
